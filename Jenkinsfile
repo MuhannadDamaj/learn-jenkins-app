@@ -20,6 +20,12 @@ pipeline {
                     '''
             }
         }
+        stage('Test'){
+            steps{
+                ech 'Test Stage'
+            }
+
+        }
         
     }
 }
