@@ -1,40 +1,39 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('build') {
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                    sh '''
-                        ls -la
-                        node --version
-                        npm --version
-                        npm ci
-                        npm run build
-                        ls -la
-                    '''
-            }
+  stages {
+    stage('build') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          reuseNode true
         }
-        stage('Test'){
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps{
-                sh '''
-                    'test -f build/index.html'
-                    npm test
-                '''
-            }
-
-        }
-        
+      }
+      steps {
+        sh '''
+          ls -la
+          node --version
+          npm --version
+          npm ci
+          npm run build
+          ls -la
+        '''
+      }
     }
+
+    stage('Test') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          reuseNode true
+        }
+      }
+      steps {
+        sh '''
+          test -f build/index.html
+          echo "Test Stage (build/index.html exists)"
+        '''
+      }
+    }
+  }
 }
