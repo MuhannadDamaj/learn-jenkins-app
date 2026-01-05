@@ -11,12 +11,8 @@ pipeline {
       }
       steps {
         sh '''
-          ls -la
-          node --version
-          npm --version
           npm ci
           npm run build
-          ls -la
         '''
       }
     }
@@ -31,14 +27,21 @@ pipeline {
       steps {
         sh '''
           test -f build/index.html
-          echo "Test Stage (build/index.html exists)"
+          echo "Test Stage ✅"
         '''
       }
     }
-    post{
-      always{
-        junit 'test-result/junit.xml'
-      }
+  }
+
+  post {
+    always {
+      echo 'Pipeline finished ✅'
+    }
+    success {
+      echo 'SUCCESS 🎉'
+    }
+    failure {
+      echo 'FAILED ❌'
     }
   }
 }
